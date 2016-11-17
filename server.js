@@ -60,19 +60,40 @@ function Table(){
     }
     this.dealFlop = function(){
         var deal = [];
-        Deck.deck.splice(0,1)
+        Deck.deck.splice(0,1);
         for(i=0;i<=2;i++){
             deal.push(Deck.deck[i]);
         }
+        Deck.deck.splice(0,3);
+        return deal;
+    }
+    this.dealTurn = function(){
+        var deal = [];
+        Deck.deck.splice(0,1);
+        deal.push(Deck.deck[0]);
+        Deck.deck.splice(0,1);
+        return deal;     
+    }
+    this.dealRiver = function(){
+        var deal = [];
+        Deck.deck.splice(0,1);
+        deal.push(Deck.deck[0]);
+        Deck.deck.splice(0,1);
         return deal;
     }
 }
 var Table = new Table();
+console.log('\n\n'+Deck.deck);
 var BharathCards = Table.dealTwo();
 var flop = Table.dealFlop();
+var turn = Table.dealTurn();
+var river = Table.dealRiver();
 var Player = new Player("Bharath",100,0,BharathCards)
+
 console.log('\n\nPlayers Cards:    '+Player.getPlayerCards());
-console.log('Flop              '+flop+'\n\n');
+console.log('Flop              '+flop);
+console.log('Turn              '+flop+','+turn);
+console.log('River             '+flop+','+turn+','+river+'\n\n');
 
 
 
