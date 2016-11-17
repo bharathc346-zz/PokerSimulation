@@ -13,8 +13,8 @@ function createDeck(){
 	}
 }
 
-createDeck(); //I need to run this only once
-shuffle(deck); // I need to run this only once
+createDeck();
+shuffle(deck); 
 
 
 
