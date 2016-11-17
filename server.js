@@ -17,29 +17,19 @@ function Deck(){
 //-----------------------------------------------------------------------------------------------
 //----------------------------------PlAYER--------------------------------------------------------
 
-// var playerName;
-// var playerAssignment;
-// var playerMoney;
-// var playerAction; 
-// var betAmount;
-
-// function setPlayerName(name){
-// 	this.playerName = name;
-// }
-
-// function getPlayerName(){
-// 	return this.playerName;
-// }
-
-// function setPlayerAssignment(){
-// 	//big blind, check, call, 
-// }
-function Player(playerName, playerMoney, betAmount) {
+function Player(playerName, playerMoney, betAmount, playerCards) {
     this.playerName = playerName;
     this.playerAssignment = ['Dealer','Big Blind','Small Blind','Normal'];
     this.playerMoney = playerMoney;
     this.playerAction = ['Raise', 'Call', 'Check', 'Fold'];
     this.betAmount = betAmount;
+    this.playerCards = playerCards;
+    this.setPlayerCards = function(cards){
+        this.playerCards=cards;
+    }
+    this.getPlayerCards = function(){
+        return this.playerCards;
+    }
     this.setBetAmount = function(amount){
     	this.setAmount = betAmount;
     }
@@ -53,20 +43,37 @@ function Player(playerName, playerMoney, betAmount) {
     	return this.playerName
     }
 }
-var draulz = new Player("Rahul", 10.00, 5.00);
-draulz.setPlayerName("Sharath");
-console.log(draulz.getPlayerName());
-
 
 //-----------------------------------------------------------------------------------------------
 //----------------------------------TABLE--------------------------------------------------------
-// function dealTwo(){
-// 	var deal = []
-// 	for(i = 0; i<=1;i++){
-// 		deal.push(deck[i]);
-// 	}
-// 	deck.splice(0,2);
-// 	return deal;
-// }
+var Deck = new Deck();
+Deck.createDeck();//create new deck
+shuffle(Deck.deck);//shuffle deck
+function Table(){
+    this.dealTwo = function(){
+        var deal = [];
+        for(i = 0; i<=1;i++){
+            deal.push(Deck.deck[i]);
+        }
+        Deck.deck.splice(0,2);
+        return deal;
+    }
+    this.dealFlop = function(){
+        var deal = [];
+        Deck.deck.splice(0,1)
+        for(i=0;i<=2;i++){
+            deal.push(Deck.deck[i]);
+        }
+        return deal;
+    }
+}
+var Table = new Table();
+var BharathCards = Table.dealTwo();
+var flop = Table.dealFlop();
+var Player = new Player("Bharath",100,0,BharathCards)
+console.log('\n\nPlayers Cards:    '+Player.getPlayerCards());
+console.log('Flop              '+flop+'\n\n');
+
+
 
 
