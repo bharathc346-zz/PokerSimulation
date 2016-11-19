@@ -101,15 +101,27 @@ console.log('Flop:                 '+flop);
 console.log('Turn:                 '+flop+','+turn);
 console.log('River                 '+flop+','+turn+','+river+'\n\n');
 //----------------------------------WIN--------------------------------------------------------
-
-function playerHand(){
+function genFullPlayerHand(twoCards){
     var fullBharathHand = [];
-    fullBharathHand = BharathCards; 
-    fullBharathHand.push(flop[0],flop[1],flop[2],turn[0],river[0]);
+    if (twoCards instanceof Array) {
+        fullBharathHand[0] = twoCards[0];
+        fullBharathHand[1] = twoCards[1];
+        fullBharathHand.push(flop[0],flop[1],flop[2],turn[0],river[0]);
+    }
     return fullBharathHand;
 }
 
-console.log(playerHand());
+console.log('Bharath Full Hand:     '+genFullPlayerHand(BharathCards));
+console.log('Rahul Full Hand:       '+genFullPlayerHand(RahulCards));
+console.log('Kaushik Full Hand:     '+genFullPlayerHand(KaushikCards));
 
-
-
+// function arrayCounter (array) {
+//     if (array instanceof Array) {
+//         return array.length;
+//     } else {
+//         return 0;
+// }
+// var myArray = [1,2,3];
+// console.log(arrayCounter(myArray)); // prints 3 to the console
+// var myString = 'test';
+// console.log(arrayCounter(myString)); // prints 0 to the console
