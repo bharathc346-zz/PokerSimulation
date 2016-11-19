@@ -85,16 +85,31 @@ function Table(){
 var Table = new Table();
 console.log('\n\n'+Deck.deck);
 var BharathCards = Table.dealTwo();
+var RahulCards = Table.dealTwo();
+var KaushikCards = Table.dealTwo();
 var flop = Table.dealFlop();
 var turn = Table.dealTurn();
 var river = Table.dealRiver();
-var Player = new Player("Bharath",100,0,BharathCards)
+var Player1 = new Player("Bharath",100,0,BharathCards);
+var Player2 = new Player("Rahul",100,0,RahulCards);
+var Player3 = new Player("Kaushik",100,0,KaushikCards);
 
-console.log('\n\nPlayers Cards:    '+Player.getPlayerCards());
-console.log('Flop              '+flop);
-console.log('Turn              '+flop+','+turn);
-console.log('River             '+flop+','+turn+','+river+'\n\n');
+console.log('\n\nBharath Cards:        '+Player1.getPlayerCards());
+console.log('Rahul Cards:          '+Player2.getPlayerCards());
+console.log('Kaushik Cards:        '+Player3.getPlayerCards());
+console.log('Flop:                 '+flop);
+console.log('Turn:                 '+flop+','+turn);
+console.log('River                 '+flop+','+turn+','+river+'\n\n');
+//----------------------------------WIN--------------------------------------------------------
 
+function playerHand(){
+    var fullBharathHand = [];
+    fullBharathHand = BharathCards; 
+    fullBharathHand.push(flop[0],flop[1],flop[2],turn[0],river[0]);
+    return fullBharathHand;
+}
+
+console.log(playerHand());
 
 
 
