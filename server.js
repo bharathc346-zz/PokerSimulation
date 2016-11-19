@@ -111,17 +111,30 @@ function genFullPlayerHand(twoCards){
     return fullBharathHand;
 }
 
-console.log('Bharath Full Hand:     '+genFullPlayerHand(BharathCards));
-console.log('Rahul Full Hand:       '+genFullPlayerHand(RahulCards));
-console.log('Kaushik Full Hand:     '+genFullPlayerHand(KaushikCards));
+var fullPlayerHandBharath = ['QD','9D','QS','10S','5D','2D','6D']//genFullPlayerHand(BharathCards);z
+var fullPlayerHandRahul = genFullPlayerHand(RahulCards);
+var fullPlayerHandKaushik = genFullPlayerHand(KaushikCards);
 
-// function arrayCounter (array) {
-//     if (array instanceof Array) {
-//         return array.length;
-//     } else {
-//         return 0;
-// }
-// var myArray = [1,2,3];
-// console.log(arrayCounter(myArray)); // prints 3 to the console
-// var myString = 'test';
-// console.log(arrayCounter(myString)); // prints 0 to the console
+var suitOccurence = 0;
+
+aids:
+for(var i =0;i<fullPlayerHandBharath.length;i++){
+    var wholeString = fullPlayerHandBharath[i];
+    var suit = wholeString.substring(1,2); 
+    var counter = 0; 
+    for(var j = i+1; j<fullPlayerHandBharath.length;j++){
+        var wholeTwoString = fullPlayerHandBharath[j];
+        var secondSuit = wholeTwoString.substring(1,2);
+        console.log(suit);
+        console.log(secondSuit);
+        if(suit==secondSuit){
+            counter++;
+        }
+     }
+    if (counter >=5){
+            console.log('FLUSH');
+            break aids;
+    }
+
+}
+
