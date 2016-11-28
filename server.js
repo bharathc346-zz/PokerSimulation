@@ -146,10 +146,9 @@ function checkFlush(fullPlayerHand){
     return flush;
 }
 
-function checkFourOfAKind(fullPlayerHand){
+function checkDuplicates(fullPlayerHand){
     var counter = 1;
-    var checkFourOfAKind = 0;
-    fourOfKindCheck:
+    var checkKind = 0;
     for(var i = 0;i<fullPlayerHand.length;i++){
         var wholeString = fullPlayerHand[i];
         var rank = wholeString.substring(0,1);
@@ -164,15 +163,24 @@ function checkFourOfAKind(fullPlayerHand){
             i=i+1;
         }
 
-        if (counter >=4){
-                checkFourOfAKind =1;
-                break fourOfKindCheck;
-        }
-        else{checkFourOfAKind =-1;}
     }
-    return checkFourOfAKind;
+    if (counter ==4){
+        checkKind=1;
+    }
+    else if (counter ==3){
+        checkKind = 3;
+    }
+
+    else if (counter ==2){
+        checkKind = 2;
+    }
+    else{
+        checkKind =-1;
+    }
+    
+    return checkKind;
 }
 
-console.log(checkFourOfAKind(fullPlayerHandBharath));
+console.log(checkDuplicates(fullPlayerHandBharath));
 
 
