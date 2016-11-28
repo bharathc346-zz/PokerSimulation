@@ -113,7 +113,7 @@ function genFullPlayerHand(twoCards){
     return fullBharathHand;
 }
 
-var fullPlayerHandBharath = ['JC','JD','10S','10H','10S','AC','KC'];//genFullPlayerHand(BharathCards);
+var fullPlayerHandBharath = ['JC','JD','JS','JH','JS','AC','KC'];//genFullPlayerHand(BharathCards);
 var fullPlayerHandRahul = genFullPlayerHand(RahulCards);
 var fullPlayerHandKaushik = genFullPlayerHand(KaushikCards);
 
@@ -182,7 +182,7 @@ function checkDuplicates(fullPlayerHand){
 }
 console.log(fullPlayerHandBharath);
 
-function checkTwoPairNFullHouse(fullPlayerHand){
+function checkTwoPair(fullPlayerHand){
     var counter = 0;
     var checkTwoPair = 0;
 
@@ -203,12 +203,14 @@ function checkTwoPairNFullHouse(fullPlayerHand){
         }
         i = i+1;
     }
-    if(counter >=2){
+    if(counter ==2){
             console.log('Two Pair');
+            checkTwoPair = 2;
     }
-
+    else{
+        checkTwoPair = -1;
+    }
+    console.log(counter);
 }
-
 checkTwoPair(fullPlayerHandBharath);
-
 
