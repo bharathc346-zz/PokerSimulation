@@ -113,7 +113,7 @@ function genFullPlayerHand(twoCards){
     return fullBharathHand;
 }
 
-var fullPlayerHandBharath = ['JC','JD','10S','10H','9S','AC','KC'];//genFullPlayerHand(BharathCards);
+var fullPlayerHandBharath = ['JC','JD','10S','10H','10S','AC','KC'];//genFullPlayerHand(BharathCards);
 var fullPlayerHandRahul = genFullPlayerHand(RahulCards);
 var fullPlayerHandKaushik = genFullPlayerHand(KaushikCards);
 
@@ -182,28 +182,29 @@ function checkDuplicates(fullPlayerHand){
 }
 console.log(fullPlayerHandBharath);
 
-function checkTwoPair(fullPlayerHand){
-    var counter = 1;
+function checkTwoPairNFullHouse(fullPlayerHand){
+    var counter = 0;
     var checkTwoPair = 0;
 
     for(var i = 0; i<fullPlayerHand.length;i++){
+        //['JC','JD','10S','QH','10S','AC','KC']
         var wholeString = fullPlayerHand[i];
         var rank = wholeString.substring(0,1);
         if(wholeString.substring(1,2)==0){rank = wholeString.substring(0,2);}
-        checkTwoPair:
+        secondLoop:
         for(var j = i+1;j<fullPlayerHand.length;j++){
             var wholeTwoString = fullPlayerHand[j];
             var secondRank = wholeTwoString.substring(0,1);
             if(wholeTwoString.substring(1,2)==0){secondRank = wholeTwoString.substring(0,2);}
             if(rank == secondRank){
                 counter++;
-                break checkTwoPair;
+                break secondLoop;
             }
         }
         i = i+1;
-        if(counter ==2){
+    }
+    if(counter >=2){
             console.log('Two Pair');
-        }
     }
 
 }
