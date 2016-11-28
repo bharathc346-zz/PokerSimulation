@@ -145,6 +145,34 @@ function checkFlush(fullPlayerHand){
     }
     return flush;
 }
-console.log(checkFlush(fullPlayerHandBharath));
+
+function checkFourOfAKind(fullPlayerHand){
+    var counter = 1;
+    var checkFourOfAKind = 0;
+    fourOfKindCheck:
+    for(var i = 0;i<fullPlayerHand.length;i++){
+        var wholeString = fullPlayerHand[i];
+        var rank = wholeString.substring(0,1);
+        if(wholeString.substring(1,2)==0){rank = wholeString.substring(0,2);}
+        for(var j = i+1;j<fullPlayerHand.length;j++){
+            var wholeTwoString = fullPlayerHand[j];
+            var secondRank = wholeTwoString.substring(0,1);
+            if(wholeTwoString.substring(1,2)==0){secondRank = wholeTwoString.substring(0,2);}
+            if(rank == secondRank){
+                counter++;
+            }
+            i=i+1;
+        }
+
+        if (counter >=4){
+                checkFourOfAKind =1;
+                break fourOfKindCheck;
+        }
+        else{checkFourOfAKind =-1;}
+    }
+    return checkFourOfAKind;
+}
+
+console.log(checkFourOfAKind(fullPlayerHandBharath));
 
 
