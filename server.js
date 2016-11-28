@@ -145,22 +145,6 @@ function checkFlush(fullPlayerHand){
     }
     return flush;
 }
+console.log(checkFlush(fullPlayerHandBharath));
 
-
-
-var numNotFlushes = 0;
-// for(var i = 0;i<100;i++){
-//     if(checkFlush(fullPlayerHandBharath)==1){
-//         numFlushes++;
-//     }
-// }
-
-//   var percentageFlush = numFlushes/100;
-//     console.log(numFlushes);
-
-
-while(checkFlush(fullPlayerHandBharath)==-1){
-    numNotFlushes++;
-}
-console.log(numNotFlushes);
 
