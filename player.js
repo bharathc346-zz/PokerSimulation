@@ -1,23 +1,29 @@
-class Player{
-	constructor(name, playerHand,type, balance){
-		this.name = name; 
-		this.type = type; //Player has a type dependent on his position in the table 
-		this.playerHand = playerHand; //Player has a hand depending on what he is dealt from the 
-		this.balance = balance;
-	}
+// Player has a name cards, an action, player capital, and a position
 
-	defineType(){
+var readlineSync = require('readline-sync'); 
 
-	}
+
+function Player(name, capital){
+	this.nam = name;
+	this.capital = capital; 
 }
 
 
+Player.prototype.fold = function(){
+	//Putback player cards in the bottom of the deck
+}
+
+Player.prototype.callBet = function(betAmount){
+	this.capital -= betAmount; 
+}
+
+Player.prototype.raise = function(rasieAmount){
+	this.capital -= rasieAmount;
+}
+module.exports = Player;
 
 
-
-
-
-
-
-
-exports.Player = Player;
+var aids = new Player('Sharath', 40);
+console.log(aids);
+aids.callBet(20);
+console.log('Money after calling: '+aids.capital);

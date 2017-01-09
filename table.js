@@ -1,14 +1,2 @@
-class Table{
-	constructor(tablePot, seats){
-		this.tabelPot = tablePot;
-		this.seats = seats;
-	}
-
-	setTablePot(a){
-		this.tablePot = a; 
-	}
-
-
-}
-
-exports.Table = Table;
+//Table has multiple players, Table Cards:(Flop, Turn, River), 
+var tableDeck = new Deck();
