@@ -4,7 +4,7 @@ var Player = require(__dirname+'/Player.js')
 				--3--	--4--
 			--2--			--5--
 		--1--				 	--6--  where 9 is dealer, 1 is small blind, and 2 is big blind
-			--9--	--8--	--7--	
+			--9D--	--8--	--7--	
 				
 
 		
@@ -15,7 +15,7 @@ function Table() {
 	//make table deck from cards class
 	this.deck = new Cards();
 	this.players = [];
-	this.myPosition = Math.floor(Math.random() * (7 - 1)) + 1;
+	this.myPosition = Math.floor(Math.random() * (10 - 1)) + 1;
 	this.myHand = [];
 	this.othersHands = [];
 
@@ -32,7 +32,7 @@ Table.prototype.createPlayers = function(numPlayers, amMoney) {
 Table.prototype.dealToPlayers = function() {
 	for(var i = 1; i<2*this.players.length+1;i++){
 		if(i%this.players.length == this.myPosition || 
-			(this.myPosition == this.players.length && i%this.player.length == 0)) 
+			(this.myPosition == this.players.length && i%this.players.length == 0)) 
 		{
 			this.myHand.push(this.deck.deal());
 		}
@@ -58,30 +58,35 @@ Table.prototype.myHandToString = function() {
 //-1 is early, 0 is middle, 1 is late
 Table.prototype.evalPos = function() {
 	if(this.myPosition <= 9 && this.myPosition >=7) {
+		this.late = true; 
 		return 1;
 	}
 	else if(this.myPosition <=6 && this.myPosition >=4) {
+		this.mid = true;
 		return 0;
 	}
 	else {
+		this.early = true;
 		return -1;
 	}
 }
 
 
 //evaluate starting hand
-Table.prototype.evalHand = function() {
+Table.prototype.evalStarHand = function() {
 	var posType = this.evalPos();
 	var nums = [];
 	var suits = [];
+	var play = false;
 	var suited = false; 
 	var paired = false;
 
 	//go through 2 elements
 	for(var i = 0; i<this.myHand.length;i++) {
-		suits.push(this.myHand[i][0]);
-		nums.push(this.myHand[i][1]);
+		nums.push(this.myHand[i][0]);
+		suits.push(this.myHand[i][1]);
 	}
+	console.log('Nums: '+nums);
 
 	
 	if(nums[0] == nums[1]) {
@@ -91,9 +96,49 @@ Table.prototype.evalHand = function() {
 	if(suits[0] == suits[1]) {
 		suited = true; 
 	}
-	console.log(suited);
-	console.log(paired);
-
+	
+	//starting hand is unsuited
+	if(!suited) {
+		//if late
+		if(posType == 1) {
+			//if has 8 then second card must be 9-J
+			if(nums.indexOf('8') > -1) {
+				if(nums.indexOf('7')> -1) {
+					play = true;
+				}
+				if(nums.indexOf('9')>-1) {
+					play = true; 
+				}
+				if(nums.indexOf('10')> -1) {
+					play = true;
+				}
+				if(nums.indexOf('J')> -1) {
+					play = true; 
+				}
+				if(nums.indexOf('A')> -1) {
+					play = true; 
+				}
+			}
+			if(nums.indexOf('9') > -1) {
+				if(nums.indexOf('7')> -1) {
+					play = true;
+				}
+				if(nums.indexOf('8')>-1) {
+					play = true; 
+				}
+				if(nums.indexOf('10')> -1) {
+					play = true;
+				}
+				if(nums.indexOf('J')> -1) {
+					play = true; 
+				}
+				if(nums.indexOf('A')> -1) {
+					play = true; 
+				}
+			}
+		}
+	}
+	return play;
 }
 
 
@@ -107,12 +152,11 @@ module.exports = Table;
 
 var table = new Table();
 table.deck.shuffle();
-
 table.createPlayers(9,40);
 console.log(table.players);
 table.dealToPlayers();
+table.myHand = ['8♥', 'A♦'];
 console.log(table.myHandToString());
-table.evalHand();
-
-
+console.log("Position: "+table.myPosition);
+console.log(table.evalStarHand());
 
