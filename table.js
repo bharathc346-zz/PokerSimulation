@@ -1,5 +1,6 @@
 var Cards = require(__dirname+'/Cards.js');
 var Player = require(__dirname+'/Player.js')
+var includes = require('array-includes');
 /*
 				--3--	--4--
 			--2--			--5--
@@ -77,70 +78,88 @@ Table.prototype.evalStarHand = function() {
 	var posType = this.evalPos();
 	var nums = [];
 	var suits = [];
-	var play = false;
+	var play = true;
 	var suited = false; 
 	var paired = false;
+	var mapVals = this.StarHandMap();
 
 	//go through 2 elements
 	for(var i = 0; i<this.myHand.length;i++) {
 		nums.push(this.myHand[i][0]);
 		suits.push(this.myHand[i][1]);
 	}
-	console.log('Nums: '+nums);
-
-	
 	if(nums[0] == nums[1]) {
 		paired = true; 
 	}
-
 	if(suits[0] == suits[1]) {
 		suited = true; 
 	}
-	
-	//starting hand is unsuited
-	if(!suited) {
-		//if late
-		if(posType == 1) {
-			//if has 8 then second card must be 9-J
-			if(nums.indexOf('8') > -1) {
-				if(nums.indexOf('7')> -1) {
-					play = true;
-				}
-				if(nums.indexOf('9')>-1) {
-					play = true; 
-				}
-				if(nums.indexOf('10')> -1) {
-					play = true;
-				}
-				if(nums.indexOf('J')> -1) {
-					play = true; 
-				}
-				if(nums.indexOf('A')> -1) {
-					play = true; 
-				}
-			}
-			if(nums.indexOf('9') > -1) {
-				if(nums.indexOf('7')> -1) {
-					play = true;
-				}
-				if(nums.indexOf('8')>-1) {
-					play = true; 
-				}
-				if(nums.indexOf('10')> -1) {
-					play = true;
-				}
-				if(nums.indexOf('J')> -1) {
-					play = true; 
-				}
-				if(nums.indexOf('A')> -1) {
-					play = true; 
-				}
-			}
+
+	//starting hand is unsuited and not pair
+	if(!suited && !paired) {
+		//playable hands 
+		if(includes(mapVals,13) && mapVals[2]>=19) {
+			play = true;
 		}
+		else if(includes(mapVals,12) && mapVals[2]>=20) {
+			play = true
+		}
+		else if(includes(mapVals,11)&& mapVals[2]>=19) {
+			play = true;
+		}
+		else if(includes(mapVals,10)&& mapVals[2]>=17) {
+			play = true;
+		}
+		else if(includes(mapVals,9)&& mapVals[2]>=16) {
+			play = true;
+		}
+		else if(includes(mapVals,8)&& mapVals[2]>=14) {
+			play = true;
+		}
+		else if(includes(mapVals,7)&& mapVals[2]>=13) {
+			play = true;
+		}
+		else {
+			play = false;
+		}
+
 	}
-	return play;
+	console.log("Playable: "+play);
 }
 
+Table.prototype.StarHandMap = function() {
+	var totalMap = 0; 
+	var mapVals = [];
+	for(var i = 0; i<this.myHand.length;i++) {
+		var j = 0;
+		var mapNum = 0;
+		if(this.myHand[i][j] == 'T') {
+			mapNum = 58-49;
+		}
+		else if(this.myHand[i][j] == 'J') {
+			mapNum = 59-49;
+		}
+		else if(this.myHand[i][j] == 'Q') {
+			mapNum = 60-49;
+		}
+		else if(this.myHand[i][j] == 'K') {
+			mapNum = 61-49;
+		}
+		else if(this.myHand[i][j] == 'A') {
+			mapNum = 62-49;
+		}
+		else {
+			mapNum = this.myHand[i][j].charCodeAt(j) - 49;		
+		}
+		mapVals.push(mapNum);
+	}
+	for(var k = 0; k<mapVals.length;k++) {
+		totalMap = totalMap+mapVals[k];
+	}
+	mapVals.push(totalMap);
+	return mapVals;
+	// console.log(mapVals+'\n');
+}
 
 module.exports = Table;
 
@@ -149,14 +168,17 @@ module.exports = Table;
 
 
 //--------------------Testing-----------------------------------
+for(var i = 0; i<100; i++) {
+	var table = new Table();
+	table.deck.shuffle();
+	table.createPlayers(9,40);
+	// console.log(table.players);
+	table.dealToPlayers();
+	// console.log("Position: "+table.myPosition);
+	console.log(table.myHand);
+	table.evalStarHand();
+	console.log("\n");
+	// table.StarHandMap();
+}
 
-var table = new Table();
-table.deck.shuffle();
-table.createPlayers(9,40);
-console.log(table.players);
-table.dealToPlayers();
-table.myHand = ['8♥', 'A♦'];
-console.log(table.myHandToString());
-console.log("Position: "+table.myPosition);
-console.log(table.evalStarHand());
 

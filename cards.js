@@ -45,11 +45,23 @@ Cards.prototype.reset = function() {
 				'K♠', 'K♦', 'K♥', 'K♣'];
 }
 
+Cards.prototype.map = function() {
+	var res = [];
+	for(var i = 0; i<this.deck.length;i++) {
+		var j = 0;
+		res.push(this.deck[i].charCodeAt(j)*this.deck[i].charCodeAt(j+1));
+		console.log(this.deck[i]+": 		"+this.deck[i].charCodeAt(j)+" , "+this.deck[i].charCodeAt(j+1));
+	}
+
+}
+
 module.exports = Cards;
 
 //--------------------Testing-----------------------------------
 
 // var deck = new Cards();
+// deck.map();
+
 // deck.shuffle();
 // console.log('\n');
 // console.log(deck.toString());
