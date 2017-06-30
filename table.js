@@ -31,6 +31,7 @@ Table.prototype.createPlayers = function(numPlayers, amMoney) {
 
 //deal cards to players
 Table.prototype.dealToPlayers = function() {
+	this.myHand = [];
 	for(var i = 1; i<2*this.players.length+1;i++){
 		if(i%this.players.length == this.myPosition || 
 			(this.myPosition == this.players.length && i%this.players.length == 0)) 
@@ -59,15 +60,12 @@ Table.prototype.myHandToString = function() {
 //-1 is early, 0 is middle, 1 is late
 Table.prototype.evalPos = function() {
 	if(this.myPosition <= 9 && this.myPosition >=7) {
-		this.late = true; 
 		return 1;
 	}
 	else if(this.myPosition <=6 && this.myPosition >=4) {
-		this.mid = true;
 		return 0;
 	}
 	else {
-		this.early = true;
 		return -1;
 	}
 }
@@ -81,7 +79,9 @@ Table.prototype.evalStarHand = function() {
 	var play = true;
 	var suited = false; 
 	var paired = false;
-	var mapVals = this.StarHandMap();
+	var temp = this.StarHandMap();
+	var mapVals = [temp[0],temp[1]];
+	var mapValsSum = temp[2];
 
 	//go through 2 elements
 	for(var i = 0; i<this.myHand.length;i++) {
@@ -98,33 +98,251 @@ Table.prototype.evalStarHand = function() {
 	//starting hand is unsuited and not pair
 	if(!suited && !paired) {
 		//playable hands 
-		if(includes(mapVals,13) && mapVals[2]>=19) {
-			play = true;
+		if(includes(mapVals,13) && mapValsSum>=19) {
+			if(mapValsSum>=23) {
+				console.log("You can play this hand in any position ");
+				play = true;
+			}
+			else if(mapValsSum>= 19 && posType == 1) {
+				console.log("You can only play this hand in a late position");
+				play = true;
+			}
+			else {
+				play = false; 
+			}
+			
 		}
-		else if(includes(mapVals,12) && mapVals[2]>=20) {
-			play = true
+		else if(includes(mapVals,12) && mapValsSum>=20) {
+			if(mapValsSum>=22) {
+				console.log("You can play this hand in any position");
+				play = true; 
+			}
+			else if(mapValsSum>=21 && posType>=0) {
+				console.log("You can only play this hand in a mid or late positon");
+				play = true;
+			}
+			else if(mapValsSum >= 20 && posType ==1) {
+				console.log("You can only play this hand in a late position");
+				play = true; 
+			}
+			else {
+				play = false; 
+			}
 		}
-		else if(includes(mapVals,11)&& mapVals[2]>=19) {
-			play = true;
+		else if(includes(mapVals,11)&& mapValsSum>=19) {
+			if(mapValsSum>=20 && posType>= 0) {
+				console.log("You can only play this in a mid or late position");
+				play = true;
+			}
+			else if(mapValsSum>=19 && posType==1) {
+				console.log("You can play this in a late position");
+				play = true; 
+			}
+			else {
+				return false;
+			}
 		}
-		else if(includes(mapVals,10)&& mapVals[2]>=17) {
-			play = true;
+		else if(includes(mapVals,10)&& mapValsSum>=17) {
+			if(mapValsSum>=19 && posType>=0) {
+				console.log("You can only play this hand in a mid or late position");
+				play = true; 
+			}
+			else if(mapValsSum>=17 && posType==1) {
+				console.log("You can only play this hand in a late position");
+				play = true; 
+			}
+			else {
+				play = false; 
+			}
 		}
-		else if(includes(mapVals,9)&& mapVals[2]>=16) {
-			play = true;
+		else if(includes(mapVals,9)&& mapValsSum>=16) {
+			if(posType==1) {
+				console.log("You can only play this hand in a mid or late position");
+				play = true;
+			}
+			else {
+				play = false; 
+			}
 		}
-		else if(includes(mapVals,8)&& mapVals[2]>=14) {
-			play = true;
+		else if(includes(mapVals,8)&& mapValsSum>=14) {
+			if(posType == 1) {
+				console.log("You can only play this hand in a mid or late position");
+				play = true;
+			}
 		}
-		else if(includes(mapVals,7)&& mapVals[2]>=13) {
-			play = true;
+		else if(includes(mapVals,7)&& mapValsSum>=13) {
+			if(posType == 1) {
+				console.log("You can only play this hand in a mid or late position");
+				play = true;
+			}
+			else {
+				play = false;
+			}
 		}
 		else {
 			play = false;
 		}
 
 	}
+	//suited or paired hand
+	else {
+		//paired
+		if(paired) {
+			if(mapValsSum>=12) {
+				console.log("You can play this hand in any position");
+				play = true; 
+			}
+			else if(mapValsSum>=8 && posType>=0) {
+				console.log("You can only play this hand in a mid or late position");
+				play = true; 
+			}
+			else if(mapValsSum>=2&& posType == 1) {
+				console.log("You can only play this hand in a late position");
+				play = true; 
+			}
+			else {
+				play = false; 
+			}
+		}
+		//suited
+		else {
+			if(includes(mapVals,13)) {
+				if(mapValsSum>=22) {
+					console.log("You can play this hand in any position");
+					play = true; 
+				}
+				else if(mapValsSum>=18 && posType>=0) {
+					console.log("You can only play this hand in a mid or late position ");
+					play = true;
+				}
+				else if(posType==1) {
+					console.log("You can only play this hand in a late position");
+					play = true; 
+				}
+			}
+
+			else if(includes(mapVals,12)) {
+				if(mapValsSum>= 21) {
+					console.log("You can play this hand in any position");
+					play = true;
+				}
+				else if(mapValsSum>=20 && posType>=0) {
+					console.log("You can only play this hand in a mid or late position ");
+					play = true; 
+				}
+				else if(posType==1) {
+					console.log("You can only play this hand in a late position");
+					play = true; 
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,11)) {
+				if(mapValsSum>=20) {
+					console.log("You can play this hand in any position");
+					play = true;
+				}
+				else if(mapValsSum>=18 && posType>=0) {
+					console.log("You can only play this hand in a mid or late position ");
+					play = true; 
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,10)) {
+				if(mapValsSum>=18) {
+					console.log("You can play this hand in any position");
+					play = true;
+				}
+				else if(mapValsSum>=17 && posType>=0) {
+					console.log("You can only play this hand in a mid or late position ");
+					play = true; 
+				}
+				else if(mapValsSum>=16 && posType==1) {
+					console.log("You can only play this hand in a late position");
+					play = true; 
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,9)) {
+				if(mapValsSum>=17) {
+					console.log("You can play this hand in any position");
+					play = true;
+				}
+				else if(mapValsSum>=16 && posType>=0) {
+					console.log("You can only play this hand in a mid or late position ");
+					play = true;
+				}
+				else if(mapValsSum>=15 && posType==1){
+					console.log("You can only play this hand in a late position");
+					play = true; 
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,8)) {
+				if(mapValsSum>=15 && posType>=0) {
+					console.log("You can only play this hand in a mid or late position ");
+					play = true;
+				}
+				else if(mapValsSum>=13 && posType==1) {
+					console.log("You can only play this hand in a late position");
+					play = true;
+				}
+				else {
+					play = false;
+				}
+			}
+			else if(includes(mapVals,7)) {
+				if(mapValsSum>=13 && posType ==1) {
+					console.log("You can only play this hand in a late position");
+					play = true;
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,6)) {
+				if(mapValsSum>= 11 && posType == 1) {
+					console.log("You can only play this hand in a late position");
+					play = true;
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,5)) {
+				if(mapValsSum>=9 && posType == 1) {
+					console.log("You can only play this hand in a late position");
+					play = true;
+				}
+				else {
+					play = false; 
+				}
+			}
+			else if(includes(mapVals,4)) {
+				if(mapValsSum>=7 && posType ==1) {
+					console.log("You can only play this hand in a late position");
+					play = true;
+				}
+				else {
+					play = false; 
+				}
+			}
+			
+			else {
+				play = false; 
+			}
+
+		}
+	}
 	console.log("Playable: "+play);
+	return play;
 }
 
 Table.prototype.StarHandMap = function() {
@@ -161,6 +379,15 @@ Table.prototype.StarHandMap = function() {
 	// console.log(mapVals+'\n');
 }
 
+Table.prototype.nextPos = function() {
+	if(this.myPosition!=9) {
+		this.myPosition++;
+	}
+	else {
+		this.myPosition = 1;
+	}
+}
+
 module.exports = Table;
 
 
@@ -168,17 +395,24 @@ module.exports = Table;
 
 
 //--------------------Testing-----------------------------------
-for(var i = 0; i<100; i++) {
-	var table = new Table();
-	table.deck.shuffle();
-	table.createPlayers(9,40);
+var countPlayableHands = 0; 
+var totalTrials = 10000;
+var table = new Table();
+table.createPlayers(9,40);
+for(var i = 0; i<totalTrials; i++) {	
 	// console.log(table.players);
+	table.deck.reset();
+	table.deck.shuffle();
 	table.dealToPlayers();
+	table.nextPos();
 	// console.log("Position: "+table.myPosition);
-	console.log(table.myHand);
-	table.evalStarHand();
+	console.log(table.myHand+"									Position: "+table.myPosition);
+	if(table.evalStarHand()) {
+		countPlayableHands++;
+	}
 	console.log("\n");
 	// table.StarHandMap();
 }
-
+console.log("Playable hands: "+countPlayableHands);
+console.log("Percentage of Playable Hands: "+(countPlayableHands/totalTrials)*100 +"%");
 
