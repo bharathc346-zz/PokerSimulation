@@ -19,6 +19,7 @@ function Table() {
 	this.myPosition = Math.floor(Math.random() * (10 - 1)) + 1;
 	this.myHand = [];
 	this.othersHands = [];
+	this.communityCards = [];
 
 };
 
@@ -32,6 +33,7 @@ Table.prototype.createPlayers = function(numPlayers, amMoney) {
 //deal cards to players
 Table.prototype.dealToPlayers = function() {
 	this.myHand = [];
+	this.othersHands = [];
 	for(var i = 1; i<2*this.players.length+1;i++){
 		if(i%this.players.length == this.myPosition || 
 			(this.myPosition == this.players.length && i%this.players.length == 0)) 
@@ -391,28 +393,37 @@ Table.prototype.nextPos = function() {
 module.exports = Table;
 
 
+Table.prototype.dealFlop = function() {
+	this.communityCards = [];
+	for(var i = 0; i<3; i++) {
+		this.communityCards.push(this.deck.deal());
+	}
+}
+Table.prototype.dealTurn = function() {
+	this.communityCards.push(this.deck.deal());
+}
+Table.prototype.dealRiver= function() {
+	this.communityCards.push(this.deck.deal());
+}
+
 
 
 
 //--------------------Testing-----------------------------------
-var countPlayableHands = 0; 
-var totalTrials = 10000;
 var table = new Table();
 table.createPlayers(9,40);
-for(var i = 0; i<totalTrials; i++) {	
-	// console.log(table.players);
-	table.deck.reset();
-	table.deck.shuffle();
-	table.dealToPlayers();
-	table.nextPos();
-	// console.log("Position: "+table.myPosition);
-	console.log(table.myHand+"									Position: "+table.myPosition);
-	if(table.evalStarHand()) {
-		countPlayableHands++;
-	}
-	console.log("\n");
-	// table.StarHandMap();
-}
-console.log("Playable hands: "+countPlayableHands);
-console.log("Percentage of Playable Hands: "+(countPlayableHands/totalTrials)*100 +"%");
+table.deck.shuffle();
+table.dealToPlayers();
+console.log("Position: "+table.myPosition);
+table.evalStarHand(table.myHand);
+
+console.log("Player Hand: "+table.myHand)
+table.dealFlop();
+console.log("Flop: "+table.communityCards);
+table.dealTurn();
+console.log("Turn: "+table.communityCards);
+table.dealRiver()
+console.log("River: "+table.communityCards)
+
+
 

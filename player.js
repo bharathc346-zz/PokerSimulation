@@ -1,6 +1,7 @@
 function Player(name, money) {
 	this.nam = name;
-	this.money = money; 
+	this.money = money;
+	this.hand = []; 
 };
 
 //set name of the player
@@ -23,11 +24,23 @@ Player.prototype.getMoney = function() {
 	return this.money;
 }
 
+// //setHand for player
+// Player.prototype.setHand = function(var x) {
+// 	this.hand = x;
+// } 
+
+// //return Hand for player
+// Player.prototype.getHand = function() {
+// 	return this.hand;
+// }
+
 //toString for player
 Player.prototype.toString = function() {
 	var res = this.nam+": 	"+this.money+"$";
 	return res;
 }
+
+
 
 module.exports = Player;
 
